@@ -55,3 +55,6 @@ class Nim:
 
 nim = Nim()
 nim.play(State(30, 1))
+
+
+# 20 -> [1, 2]
