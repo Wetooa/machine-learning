@@ -21,8 +21,8 @@ class Action:
 @dataclass(eq=True, frozen=True, order=True)
 class Node:
     state: State
-    action: Action = field(default=None)
-    parent: "Node" = field(default=None, repr=False)
+    action: Action = field()
+    parent: "Node" = field()
     num_of_moves: int = 0
 
 
@@ -35,7 +35,7 @@ class Cells(Enum):
 
 class Frontier(ABC):
     def __init__(self) -> None:
-        self.list: Sized = []
+        self.list = []
         self.visited_state: set[State] = set()
 
     def add(self, node: Node):
@@ -201,4 +201,4 @@ for node in s.depth_first():
 
 print("\n--A* SEARCH--")
 for node in s.a_star():
-    print(node)
+    print(n:ode)
