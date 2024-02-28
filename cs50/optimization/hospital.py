@@ -21,17 +21,18 @@ class Space:
     def add_hospital(self, row, col):
         self.hospitals.add((row, col))
 
-    def get_current_cost(self):
-        self.cost = defaultdict(lambda: inf)
+    def get_cost(self, houses):
+        cost = defaultdict(lambda: inf)
 
-        for house_x, house_y in self.houses:
+        for house_x, house_y in houses:
             for hospital in self.hospitals:
                 hospital_x, hospital_y = hospital
-                self.cost[hospital] = min(
-                    self.cost[hospital],
+                cost[hospital] = min(
+                    cost[hospital],
                     abs(house_x - hospital_x) + abs(house_y - hospital_y),
                 )
-        return sum(self.cost.values())
+
+        return sum(cost.values())
 
     def get_random_state(self, num_houses):
         self.hospitals = set(
@@ -46,9 +47,11 @@ class Space:
             )
         )
 
-    def get_neighbors(self):
+    def get_neighbors(self, houses):
         neighbors = set()
-        for house_x, house_y in self.houses:
+
+        for house_x, house_y in houses:
+
             for dx, dy in self.NEIGHBOR_DIRECTIONS:
                 r = house_x + dx
                 c = house_y + dy
@@ -61,15 +64,26 @@ class Space:
                     and (r, c) not in self.houses
                     and (r, c) not in neighbors
                 ):
-                    neighbors.add((r, c))
+                    copy = set(houses)
+                    copy.add((r, c))
+                    copy.remove((r, c))
+                    neighbors.add(copy)
+
         return neighbors
 
     def hill_climb(self, maximum, log):
 
         self.get_random_state(maximum)
-        self.current_best = inf
+        current_best = self.get_cost(self.houses)
+
+        print("Initial best state cost:", current_best)
 
         while True:
+            new_best = current_best
+            for neighbor in self.get_neighbors(self.houses):
+                new_best = max(new_best, self.get_cost(neighbor))
 
-            if 1:
+            if new_best <= current_best:
                 break
+
+            print("New best state:", current_best)
