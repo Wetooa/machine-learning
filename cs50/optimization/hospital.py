@@ -7,7 +7,6 @@ from PIL import Image
 
 
 class Space:
-
     NEIGHBOR_DIRECTIONS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
     def __init__(self, rows, cols, num_of_hospitals, num_of_houses) -> None:
@@ -93,6 +92,8 @@ class Space:
 
     def random_restart(self, iterations=10):
         best_house_state = self.get_random_houses_state()
+        self.houses = best_house_state
+        self.display()
 
         while iterations:
             self.hill_climb()
@@ -144,6 +145,6 @@ class Space:
             print()
 
 
-s = Space(rows=10, cols=30, num_of_hospitals=5, num_of_houses=15)
+s = Space(rows=10, cols=30, num_of_hospitals=10, num_of_houses=20)
 
 hospitals = s.random_restart()
